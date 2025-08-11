@@ -1,9 +1,58 @@
 # Netflix RecSys - Minimal Working Repo
 
-**Author:** Rashmin Gajera  
-**Open for suggestions and improvements!**
+<p align="center">
+  <img src="https://img.shields.io/badge/Author-Rashmin%20Gajera-blue" alt="Author" />
+  <img src="https://img.shields.io/badge/Open%20for%20Suggestions-Yes-brightgreen" alt="Open for Suggestions" />
+</p>
 
-This repository is a runnable scaffold for a Netflix-style Recommendation System. It demonstrates a modular, local-first approach to building a movie recommendation pipeline using FastAPI, sentence-transformers, ChromaDB, reranking, and more.
+<p align="center">
+  <img src="https://img.shields.io/badge/Project-Type-Recommendation%20System-red" alt="Project Type" />
+</p>
+
+---
+
+## 🚀 Overview
+
+Netflix RecSys is a modular, local-first Netflix-style movie recommendation system. It features:
+
+- FastAPI backend
+- Sentence-Transformers for embeddings
+- ChromaDB for vector storage
+- Reranking (cosine similarity, TensorFlow cross-encoder)
+- LangChain for LLM explanations
+- Simple HTML/JS frontend
+
+---
+
+## 🛠️ Tech Stack
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center" style="border-radius: 12px; border: 1px solid #eee; padding: 12px; margin: 6px;">
+        <img src="https://img.shields.io/badge/FastAPI-005571?logo=fastapi&logoColor=white" alt="FastAPI" />
+      </td>
+      <td align="center" style="border-radius: 12px; border: 1px solid #eee; padding: 12px; margin: 6px;">
+        <img src="https://img.shields.io/badge/Sentence%20Transformers-4B8BBE?logo=python&logoColor=white" alt="Sentence Transformers" />
+      </td>
+      <td align="center" style="border-radius: 12px; border: 1px solid #eee; padding: 12px; margin: 6px;">
+        <img src="https://img.shields.io/badge/ChromaDB-13EF7C?logo=databricks&logoColor=white" alt="ChromaDB" />
+      </td>
+      <td align="center" style="border-radius: 12px; border: 1px solid #eee; padding: 12px; margin: 6px;">
+        <img src="https://img.shields.io/badge/TensorFlow-FF6F00?logo=tensorflow&logoColor=white" alt="TensorFlow" />
+      </td>
+      <td align="center" style="border-radius: 12px; border: 1px solid #eee; padding: 12px; margin: 6px;">
+        <img src="https://img.shields.io/badge/Numpy-013243?logo=numpy&logoColor=white" alt="Numpy" />
+      </td>
+      <td align="center" style="border-radius: 12px; border: 1px solid #eee; padding: 12px; margin: 6px;">
+        <img src="https://img.shields.io/badge/Selenium-43B02A?logo=selenium&logoColor=white" alt="Selenium" />
+      </td>
+      <td align="center" style="border-radius: 12px; border: 1px solid #eee; padding: 12px; margin: 6px;">
+        <img src="https://img.shields.io/badge/LangChain-000000?logo=python&logoColor=white" alt="LangChain" />
+      </td>
+    </tr>
+  </table>
+</div>
 
 ---
 
