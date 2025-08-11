@@ -1,0 +1,13 @@
+
+fastapi
+uvicorn
+sentence-transformers
+chromadb
+numpy
+pydantic
+selenium
+requests
+langchain
+openai
+transformers
+tensorflow

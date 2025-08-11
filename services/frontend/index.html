@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Netflix RecSys Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary: #e50914;
+        --secondary: #221f1f;
+        --bg: #141414;
+        --card-bg: #232323;
+        --text: #fff;
+        --muted: #b3b3b3;
+        --radius: 12px;
+        --shadow: 0 4px 24px rgba(0,0,0,0.2);
+      }
+      body {
+        font-family: 'Roboto', Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+        min-height: 100vh;
+        padding: 0;
+      }
+      header {
+        background: var(--secondary);
+        padding: 2rem 0 1rem 0;
+        text-align: center;
+        box-shadow: var(--shadow);
+      }
+      h1 {
+        font-family: 'Montserrat', Arial, sans-serif;
+        color: var(--primary);
+        margin: 0;
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+      }
+      .container {
+        max-width: 700px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      .card {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 2rem 1.5rem;
+        margin-bottom: 2rem;
+        border: none;
+        transition: transform 0.15s;
+      }
+      .card.rec {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+        padding: 1.5rem 1rem;
+        border-left: 5px solid var(--primary);
+        background: linear-gradient(90deg, #232323 90%, #e5091420 100%);
+      }
+      label {
+        font-size: 1.1rem;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+      input[type="text"] {
+        width: 70%;
+        padding: 0.7rem 1rem;
+        border-radius: var(--radius);
+        border: 1px solid #444;
+        background: #181818;
+        color: var(--text);
+        font-size: 1.1rem;
+        margin-right: 1rem;
+        outline: none;
+        transition: border 0.2s;
+      }
+      input[type="text"]:focus {
+        border: 1.5px solid var(--primary);
+      }
+      button {
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius);
+        padding: 0.7rem 2rem;
+        font-size: 1.1rem;
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 2px 8px #e5091420;
+        transition: background 0.2s, transform 0.1s;
+      }
+      button:hover, button:focus {
+        background: #b0060f;
+        transform: translateY(-2px) scale(1.03);
+      }
+      .metrics {
+        font-size: 0.95rem;
+        color: var(--muted);
+        margin-top: 0.7rem;
+        min-height: 1.2em;
+      }
+      #results {
+        margin-top: 1.5rem;
+      }
+      .rec-title {
+        font-size: 1.2rem;
+        font-family: 'Montserrat', Arial, sans-serif;
+        color: var(--primary);
+        margin-bottom: 0.3rem;
+      }
+      .rec-score {
+        font-size: 1rem;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+      }
+      @media (max-width: 600px) {
+        .container { padding: 0 0.2rem; }
+        .card, .card.rec { padding: 1rem 0.5rem; }
+        input[type="text"] { width: 100%; margin-bottom: 1rem; }
+        button { width: 100%; }
+        .card.rec { flex-direction: column; gap: 0.5rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Netflix RecSys <span style="font-size:1.1rem;color:#fff;font-weight:400;">Demo By Rashmin Gajera</span></h1>
+    </header>
+    <div class="container">
+      <div class="card">
+        <label for="query">Describe a movie you want to watch:</label>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+          <input id="query" type="text" value="mind-bending sci-fi about dreams" placeholder="e.g. romantic comedy in Paris" />
+          <button id="go">Recommend</button>
+        </div>
+        <div id="status" class="metrics"></div>
+      </div>
+      <div id="results"></div>
+    </div>
+    <script>
+      const go = document.getElementById('go');
+      const queryInput = document.getElementById('query');
+      const status = document.getElementById('status');
+      const results = document.getElementById('results');
+
+      async function recommend() {
+        const q = queryInput.value.trim();
+        if (!q) {
+          status.textContent = "Please enter a query.";
+          return;
+        }
+        status.textContent = 'Requesting...';
+        results.innerHTML = '';
+        const start = performance.now();
+        try {
+          const resp = await fetch('/api/recommend/query', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({query: q, top_k: 5})
+          });
+          if (!resp.ok) throw new Error(`API error: ${resp.status}`);
+          const data = await resp.json();
+          const ms = Math.round(performance.now() - start);
+          status.textContent = `Latency: ${ms} ms`;
+          results.innerHTML = '';
+          if (data.recommendations && data.recommendations.length) {
+            data.recommendations.forEach(r => {
+              const d = document.createElement('div');
+              d.className = 'card rec';
+              d.innerHTML = `
+                <div>
+                  <div class="rec-title">${r.title}</div>
+                  <div class="rec-score">Score: ${r.score.toFixed(3)}</div>
+                  ${r.plot ? `<div style="color:#eee;font-size:0.98rem;margin-top:0.5rem;">${r.plot}</div>` : ''}
+                </div>
+              `;
+              results.appendChild(d);
+            });
+          } else {
+            results.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);">No recommendations found.</div>`;
+          }
+        } catch(e) {
+          status.textContent = 'Error: ' + e.toString();
+        }
+      }
+
+      go.onclick = recommend;
+      queryInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') recommend();
+      });
+    </script>

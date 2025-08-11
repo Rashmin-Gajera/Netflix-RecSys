@@ -1,0 +1,28 @@
+
+version: '3.8'
+services:
+  chroma:
+    image: ghcr.io/chroma-core/chroma:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/chroma:/data/chroma
+
+  api:
+    build: ./services/api
+    environment:
+      - CHROMA_PERSIST_DIR=./data/chroma
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    ports:
+      - "8001:8000"
+    depends_on:
+      - chroma
+
+  frontend:
+    image: nginx:stable-alpine
+    volumes:
+      - ./services/frontend:/usr/share/nginx/html:ro
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
