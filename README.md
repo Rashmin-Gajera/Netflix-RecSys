@@ -1,13 +1,20 @@
-# Netflix RecSys - Minimal Working Repo
+# Netflix RecSys - By Rashmin Gajera
 
 <p align="center">
   <img src="https://img.shields.io/badge/Author-Rashmin%20Gajera-blue" alt="Author" />
   <img src="https://img.shields.io/badge/Open%20for%20Suggestions-Yes-brightgreen" alt="Open for Suggestions" />
 </p>
 
+
 <p align="center">
   <img src="https://img.shields.io/badge/Project-Type-Recommendation%20System-red" alt="Project Type" />
 </p>
+
+<div align="center" style="margin-bottom: 16px;">
+  <img src="data/prototype.png" alt="Project Prototype" style="border-radius: 16px; max-width: 400px; box-shadow: 0 2px 8px #aaa; margin-top: 10px;" />
+  <br />
+  <em>Project Prototype</em>
+</div>
 
 ---
 
